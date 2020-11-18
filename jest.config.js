@@ -11,6 +11,25 @@
  */
 
 module.exports = {
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.{ts,tsx}',
+    "!**/node_modules/**"
+  ],
+  coverageDirectory: './coverage',
+  coverageReporters: [
+    'html-spa',
+    'text-summary',
+  ],
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 50,
+  //     functions: 50,
+  //     lines: 50,
+  //     statements: 50
+  //   }
+  // },
   roots: ['src'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
