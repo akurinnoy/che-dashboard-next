@@ -46,10 +46,9 @@ export enum WorkspaceDetailsTabs {
   Logs = 5
 }
 
-type Props =
-  {
-    onSave: (workspace: che.Workspace) => Promise<void>
-  } & MappedProps;
+type Props = MappedProps & {
+  onSave: (workspace: che.Workspace) => Promise<void>
+};
 
 type State = {
   activeTabKey?: WorkspaceDetailsTabs;
@@ -68,7 +67,7 @@ export class WorkspaceDetails extends React.PureComponent<Props, State> {
   private readonly editorTabPageRef: React.RefObject<Editor>;
   private readonly overviewTabPageRef: React.RefObject<Overview>;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.editorTabPageRef = React.createRef<Editor>();
@@ -106,14 +105,14 @@ export class WorkspaceDetails extends React.PureComponent<Props, State> {
         activeTabKey: tabIndex as WorkspaceDetailsTabs
       });
     };
-    let showAlertTimer;
+    let showAlertTimer: number;
     this.showAlert = (variant: AlertVariant, title: string, timeDelay?: number): void => {
       this.alert = { variant, title };
       this.setState({ alertVisible: true });
       if (showAlertTimer) {
         clearTimeout(showAlertTimer);
       }
-      showAlertTimer = setTimeout(() => {
+      showAlertTimer = window.setTimeout(() => {
         this.setState({ alertVisible: false });
       }, timeDelay ? timeDelay : 2000);
     };

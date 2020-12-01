@@ -27,7 +27,7 @@ export class CheOpenshiftIoLoginPage implements ILoginPage {
 
   constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) { }
 
-  async login() {
+  async login(): Promise<void> {
     Logger.debug('CheOpenshiftIoLoginPage.login');
 
     await this.openLoginPage();

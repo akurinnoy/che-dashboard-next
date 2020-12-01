@@ -10,6 +10,6 @@
  *   Red Hat, Inc. - initial API and implementation
  */
 
-export const delay = (ms = 500) => {
+export const delay = (ms = 500): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };

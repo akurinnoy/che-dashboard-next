@@ -11,7 +11,7 @@
  */
 
 import { Action } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import * as Plugins from './Plugins';
 import * as FactoryResolver from './FactoryResolver';
 import * as WorkspacesStore from './Workspaces';
@@ -49,9 +49,10 @@ export const reducers = {
 export interface AppThunkAction<TAction> {
   (dispatch: (action: TAction) => void, getState: () => AppState): void;
 }
-export type AppThunk<ActionType extends Action, ReturnType = void> = ThunkAction<
-  ReturnType,
+export type AppThunk<TAction extends Action, TReturn = void> = ThunkAction<
+  TReturn,
   AppState,
   unknown,
-  ActionType
+  TAction
 >;
+export type AppDispatch<TState, TAction extends Action> = ThunkDispatch<TState, undefined, TAction>;

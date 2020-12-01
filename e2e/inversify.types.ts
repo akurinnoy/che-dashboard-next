@@ -19,8 +19,7 @@ const TYPES = {
 const CLASSES = {
   DriverHelper: 'DriverHelper',
   ScreenCatcher: 'ScreenCatcher',
-  Dashboard: 'Dasboard'
-
+  Dashboard: 'Dashboard',
 };
 
 export { TYPES, CLASSES };

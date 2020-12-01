@@ -24,6 +24,5 @@ suite('Suite', async () => {
     await loginPage.login();
     await dashboard.waitPage();
 
-
   });
 });

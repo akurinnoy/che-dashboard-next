@@ -19,7 +19,6 @@ import { ThenableWebDriver, By, until, WebElement } from 'selenium-webdriver';
 import { TestConstants } from '../TestConstants';
 import { Logger } from './Logger';
 
-
 @injectable()
 export class DriverHelper {
     private readonly driver: ThenableWebDriver;
@@ -46,7 +45,7 @@ export class DriverHelper {
         }
     }
 
-    public async wait(milliseconds: number) {
+    public async wait(milliseconds: number): Promise<void> {
         Logger.trace(`DriverHelper.wait (${milliseconds} milliseconds)`);
 
         await this.driver.sleep(milliseconds);
@@ -163,7 +162,7 @@ export class DriverHelper {
         throw new error.TimeoutError(`Exceeded maximum presence checkings attempts, problems with 'StaleElementReferenceError' of '${elementLocator}' element`);
     }
 
-    public async waitAllVisibility(locators: Array<By>, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitAllVisibility(locators: Array<By>, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace(`DriverHelper.waitAllVisibility ${locators}`);
 
         for (const elementLocator of locators) {
@@ -173,7 +172,7 @@ export class DriverHelper {
 
     public async waitDisappearance(elementLocator: By,
         attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS,
-        polling: number = TestConstants.TEST_DEFAULT_POLLING) {
+        polling: number = TestConstants.TEST_DEFAULT_POLLING): Promise<void> {
 
         Logger.trace(`DriverHelper.waitDisappearance ${elementLocator}`);
 
@@ -184,7 +183,7 @@ export class DriverHelper {
         }
     }
 
-    public async waitDisappearanceWithTimeout(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitDisappearanceWithTimeout(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace(`DriverHelper.waitDisappearanceWithTimeout ${elementLocator}`);
 
         await this.getDriver().wait(async () => {
@@ -198,7 +197,7 @@ export class DriverHelper {
 
     public async waitAllDisappearance(locators: Array<By>,
         attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS,
-        polling: number = TestConstants.TEST_DEFAULT_POLLING) {
+        polling: number = TestConstants.TEST_DEFAULT_POLLING): Promise<void> {
 
         Logger.trace(`DriverHelper.waitAllDisappearance ${locators}`);
 
@@ -207,7 +206,7 @@ export class DriverHelper {
         }
     }
 
-    public async waitAndClick(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitAndClick(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -299,7 +298,7 @@ export class DriverHelper {
     public async waitAttributeValue(elementLocator: By,
         attribute: string,
         expectedValue: string,
-        timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+        timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
 
         Logger.trace(`DriverHelper.waitAttributeValue ${elementLocator}`);
 
@@ -312,7 +311,7 @@ export class DriverHelper {
             `The '${attribute}' attribute value doesn't match with expected value '${expectedValue}'`);
     }
 
-    public async type(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async type(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -337,7 +336,7 @@ export class DriverHelper {
         throw new error.TimeoutError(`Exceeded maximum typing attempts, to the '${elementLocator}' element`);
     }
 
-    public async typeToInvisible(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async typeToInvisible(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -362,7 +361,7 @@ export class DriverHelper {
         throw new error.TimeoutError(`Exceeded maximum typing attempts, to the '${elementLocator}' element`);
     }
 
-    public async clear(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async clear(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -387,7 +386,7 @@ export class DriverHelper {
         throw new error.TimeoutError(`Exceeded maximum clearing attempts, to the '${elementLocator}' element`);
     }
 
-    public async clearInvisible(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async clearInvisible(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -412,7 +411,7 @@ export class DriverHelper {
         throw new error.TimeoutError(`Exceeded maximum clearing attempts, to the '${elementLocator}' element`);
     }
 
-    public async enterValue(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async enterValue(elementLocator: By, text: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace(`DriverHelper.enterValue ${elementLocator} text: ${text}`);
 
         await this.waitVisibility(elementLocator, timeout);
@@ -422,7 +421,7 @@ export class DriverHelper {
         await this.waitAttributeValue(elementLocator, 'value', text, timeout);
     }
 
-    public async waitAndSwitchToFrame(iframeLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitAndSwitchToFrame(iframeLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace(`DriverHelper.waitAndSwitchToFrame ${iframeLocator}`);
 
         await this.driver.wait(until.ableToSwitchToFrame(iframeLocator), timeout);
@@ -460,32 +459,32 @@ export class DriverHelper {
         return elementValue;
     }
 
-    public async waitUntilTrue(callback: any, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitUntilTrue(callback: (...args: unknown[]) => void, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace('DriverHelper.waitUntilTrue');
 
         await this.driver.wait(callback, timeout);
     }
 
-    public async reloadPage() {
+    public async reloadPage(): Promise<void> {
         Logger.debug('DriverHelper.reloadPage');
 
         await this.driver.navigate().refresh();
     }
 
-    public async navigateAndWaitToUrl(url: string) {
+    public async navigateAndWaitToUrl(url: string): Promise<void> {
         Logger.trace(`DriverHelper.navigateAndWaitToUrl ${url}`);
 
         await this.navigateToUrl(url);
         await this.waitURL(url);
     }
 
-    public async navigateToUrl(url: string) {
+    public async navigateToUrl(url: string): Promise<void> {
         Logger.debug(`DriverHelper.navigateToUrl ${url}`);
 
         await this.driver.navigate().to(url);
     }
 
-    public async waitURL(expectedUrl: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async waitURL(expectedUrl: string): Promise<void> {
         Logger.trace(`DriverHelper.waitURL ${expectedUrl}`);
 
         await this.getDriver().wait(async () => {
@@ -498,7 +497,7 @@ export class DriverHelper {
         });
     }
 
-    public async scrollTo(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    public async scrollTo(elementLocator: By, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         const attempts: number = TestConstants.TEST_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TEST_DEFAULT_POLLING;
 
@@ -533,7 +532,7 @@ export class DriverHelper {
         return this.driver;
     }
 
-    async waitOpenningSecondWindow(timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+    async waitOpenningSecondWindow(timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
         Logger.trace('DriverHelper.waitOpenningSecondWindow');
 
         await this.driver.wait(async () => {
@@ -544,7 +543,7 @@ export class DriverHelper {
         }, timeout);
     }
 
-    async switchToSecondWindow(mainWindowHandle: string) {
+    async switchToSecondWindow(mainWindowHandle: string): Promise<void> {
         Logger.debug('DriverHelper.switchToSecondWindow');
 
         await this.waitOpenningSecondWindow();

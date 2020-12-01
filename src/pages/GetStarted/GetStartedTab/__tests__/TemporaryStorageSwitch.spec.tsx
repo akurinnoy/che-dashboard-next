@@ -42,10 +42,10 @@ describe('Temporary Storage Switch', () => {
     const store = createFakeStoreWithMetadata();
     renderSwitch(store, 'false');
     const switchInput = screen.getByRole('checkbox') as HTMLInputElement;
-    expect(switchInput.checked).toBeTruthy();
+    expect(switchInput).toBeChecked();
 
     switchInput.click();
-    expect(switchInput.checked).toBeFalsy();
+    expect(switchInput).not.toBeChecked();
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 
@@ -53,10 +53,10 @@ describe('Temporary Storage Switch', () => {
     const store = createFakeStoreWithMetadata();
     renderSwitch(store, 'true');
     const switchInput = screen.getByRole('checkbox') as HTMLInputElement;
-    expect(switchInput.checked).toBeFalsy();
+    expect(switchInput).not.toBeChecked();
 
     switchInput.click();
-    expect(switchInput.checked).toBeTruthy();
+    expect(switchInput).toBeChecked();
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 

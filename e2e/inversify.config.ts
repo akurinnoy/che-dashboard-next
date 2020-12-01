@@ -29,5 +29,4 @@ testContainer.bind<DriverHelper>(CLASSES.DriverHelper).to(DriverHelper);
 testContainer.bind<ScreenCatcher>(CLASSES.ScreenCatcher).to(ScreenCatcher);
 testContainer.bind<Dashboard>(CLASSES.Dashboard).to(Dashboard);
 
-
 export { testContainer };

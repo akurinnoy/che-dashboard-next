@@ -20,7 +20,7 @@ import { TestConstants } from '../TestConstants';
 export class ScreenCatcher {
     constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) { }
 
-    async catchMethodScreen(methodName: string, methodIndex: number, screenshotIndex: number) {
+    async catchMethodScreen(methodName: string, methodIndex: number, screenshotIndex: number): Promise<void> {
         const executionScreenCastDir = `${TestConstants.TEST_REPORT_FOLDER}/executionScreencast`;
         const executionScreenCastErrorsDir = `${TestConstants.TEST_REPORT_FOLDER}/executionScreencastErrors`;
         const formattedMethodIndex: string = new Intl.NumberFormat('en-us', { minimumIntegerDigits: 3 }).format(methodIndex);
@@ -37,7 +37,7 @@ export class ScreenCatcher {
         const date: Date = new Date();
         const timeStr: string = date.toLocaleTimeString('en-us', { hour12: false }) + '.' + new Intl.NumberFormat('en-us', { minimumIntegerDigits: 3 }).format(date.getMilliseconds());
 
-        const screenshotPath: string = `${executionScreenCastDir}/${formattedMethodIndex}${formattedScreenshotIndex}--(${timeStr}): ${methodName}.png`;
+        const screenshotPath = `${executionScreenCastDir}/${formattedMethodIndex}${formattedScreenshotIndex}--(${timeStr}): ${methodName}.png`;
 
         try {
             await this.catchScreen(screenshotPath);
@@ -52,14 +52,14 @@ export class ScreenCatcher {
         }
     }
 
-    async catchScreen(screenshotPath: string) {
+    async catchScreen(screenshotPath: string): Promise<void> {
         const screenshot: string = await this.driverHelper.getDriver().takeScreenshot();
         const screenshotStream = fs.createWriteStream(screenshotPath);
         screenshotStream.write(new Buffer(screenshot, 'base64'));
         screenshotStream.end();
     }
 
-    async writeErrorLog(errorLogPath: string, err: Error) {
+    async writeErrorLog(errorLogPath: string, err: Error): Promise<void> {
         console.log(`Failed to save screenshot, additional information in the ${errorLogPath}`);
 
         if (err.stack) {

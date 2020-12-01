@@ -162,7 +162,7 @@ describe('IDE Loader container', () => {
     expect(LoadIdeSteps[elementCurrentStep.innerHTML]).toEqual(LoadIdeSteps[LoadIdeSteps.START_WORKSPACE]);
 
     const elementIdeUrl = screen.getByTestId('ide-loader-workspace-ide-url');
-    expect(elementIdeUrl.innerHTML).toEqual('');
+    expect(elementIdeUrl).toBeEmptyDOMElement();
   });
 
   it('should have correct OPEN_IDE', () => {
@@ -192,7 +192,7 @@ describe('IDE Loader container', () => {
     expect(LoadIdeSteps[elementCurrentStep.innerHTML]).toEqual(LoadIdeSteps[LoadIdeSteps.OPEN_IDE]);
 
     const elementWorkspaceId = screen.getByTestId('ide-loader-workspace-id');
-    expect(elementWorkspaceId.innerHTML).toEqual('');
+    expect(elementWorkspaceId).toBeEmptyDOMElement();
 
     const elementIdeUrl = screen.getByTestId('ide-loader-workspace-ide-url');
     expect(elementIdeUrl.innerHTML).toEqual(ideUrl);

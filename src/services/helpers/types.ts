@@ -27,7 +27,7 @@ export enum StorageType {
 export interface FactoryResolver {
   v: string;
   source: string;
-  devfile: api.che.workspace.devfile.Devfile
+  devfile: dto.che.workspace.devfile.Devfile
 }
 
 export enum WorkspaceStatus {

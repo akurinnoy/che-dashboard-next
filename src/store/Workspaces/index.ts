@@ -12,8 +12,7 @@
 
 import { Action, Reducer } from 'redux';
 import * as api from '@eclipse-che/api';
-import { ThunkDispatch } from 'redux-thunk';
-import { AppThunk } from '../';
+import { AppDispatch, AppThunk } from '../';
 import { container } from '../../inversify.config';
 import { CheWorkspaceClient } from '../../services/workspace-client/CheWorkspaceClient';
 import { WorkspaceStatus } from '../../services/helpers/types';
@@ -131,7 +130,7 @@ export type ActionCreators = {
     devfile: api.che.workspace.devfile.Devfile,
     namespace: string | undefined,
     infrastructureNamespace: string | undefined,
-    attributes: { [key: string]: string } | {},
+    attributes: { [key: string]: string },
   ) => AppThunk<KnownAction, Promise<che.Workspace>>;
   requestSettings: () => AppThunk<KnownAction, Promise<void>>;
 
@@ -146,7 +145,7 @@ type EnvironmentOutputMessageHandler = (message: api.che.workspace.event.Runtime
 const subscribedWorkspaceStatusCallbacks = new Map<string, WorkspaceStatusMessageHandler>();
 const subscribedEnvironmentOutputCallbacks = new Map<string, EnvironmentOutputMessageHandler>();
 
-function subscribeToStatusChange(workspaceId: string, dispatch: ThunkDispatch<State, undefined, UpdateWorkspaceStatusAction | DeleteWorkspaceLogsAction>): void {
+function subscribeToStatusChange(workspaceId: string, dispatch: AppDispatch<State, UpdateWorkspaceStatusAction | DeleteWorkspaceLogsAction>): void {
   const callback = message => {
     const status = message.error ? 'ERROR' : message.status;
     if (WorkspaceStatus[status]) {
@@ -179,7 +178,7 @@ function unSubscribeToStatusChange(workspaceId: string): void {
   subscribedWorkspaceStatusCallbacks.delete(workspaceId);
 }
 
-function subscribeToEnvironmentOutput(workspaceId: string, dispatch: ThunkDispatch<State, undefined, UpdateWorkspacesLogsAction | DeleteWorkspaceLogsAction>): void {
+function subscribeToEnvironmentOutput(workspaceId: string, dispatch: AppDispatch<State, UpdateWorkspacesLogsAction | DeleteWorkspaceLogsAction>): void {
   const callback: EnvironmentOutputMessageHandler = message => {
     if (message.text) {
       const workspacesLogs = new Map<string, string[]>();
@@ -207,11 +206,9 @@ function unSubscribeToEnvironmentOutput(workspaceId: string): void {
   subscribedEnvironmentOutputCallbacks.delete(workspaceId);
 }
 
-// ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
-// They don't directly mutate state, but they can have external side-effects (such as loading data).
 export const actionCreators: ActionCreators = {
 
-  requestWorkspaces: (): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  requestWorkspaces: (): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     dispatch({ type: 'REQUEST_WORKSPACES' });
 
     try {
@@ -235,7 +232,7 @@ export const actionCreators: ActionCreators = {
 
   },
 
-  requestWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  requestWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     dispatch({ type: 'REQUEST_WORKSPACES' });
 
     try {
@@ -248,9 +245,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  requestSettings: (): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
-    dispatch({ type: 'REQUEST_WORKSPACES' });
-
+  requestSettings: (): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     try {
       const settings = await WorkspaceClient.restApiClient.getSettings<che.WorkspaceSettings>();
       dispatch({ type: 'RECEIVE_SETTINGS', settings });
@@ -260,7 +255,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  startWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  startWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     try {
       const workspace = await WorkspaceClient.restApiClient.start<che.Workspace>(workspaceId);
       subscribeToEnvironmentOutput(workspaceId, dispatch);
@@ -273,18 +268,20 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  stopWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  stopWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     try {
       await WorkspaceClient.restApiClient.stop(workspaceId);
+      unSubscribeToEnvironmentOutput(workspaceId);
     } catch (e) {
       dispatch({ type: 'RECEIVE_ERROR' });
       throw new Error(`Failed to stop the workspace, ID: ${workspaceId}, ` + e);
     }
   },
 
-  deleteWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  deleteWorkspace: (workspaceId: string): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     try {
       await WorkspaceClient.restApiClient.delete(workspaceId);
+      unSubscribeToEnvironmentOutput(workspaceId);
       dispatch({ type: 'DELETE_WORKSPACE', workspaceId });
     } catch (e) {
       dispatch({ type: 'RECEIVE_ERROR' });
@@ -292,7 +289,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  updateWorkspace: (workspace: che.Workspace): AppThunk<KnownAction, Promise<void>> => async (dispatch): Promise<void> => {
+  updateWorkspace: (workspace: che.Workspace): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     dispatch({ type: 'REQUEST_WORKSPACES' });
 
     try {
@@ -310,13 +307,12 @@ export const actionCreators: ActionCreators = {
     namespace: string | undefined,
     infrastructureNamespace: string | undefined,
     attributes: { [key: string]: string } = {},
-  ): AppThunk<KnownAction, Promise<che.Workspace>> => async (dispatch): Promise<che.Workspace> => {
+  ): AppThunk<KnownAction, Promise<che.Workspace>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<che.Workspace> => {
     dispatch({ type: 'REQUEST_WORKSPACES' });
     try {
       const param = { attributes, namespace, infrastructureNamespace };
       const workspace = await WorkspaceClient.restApiClient.create<che.Workspace>(devfile, param);
       dispatch({ type: 'ADD_WORKSPACE', workspace });
-      // Subscribe
       subscribeToStatusChange(workspace.id, dispatch);
 
       return workspace;
@@ -326,7 +322,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  setWorkspaceQualifiedName: (namespace: string, workspaceName: string): AppThunk<SetWorkspaceQualifiedName> => dispatch => {
+  setWorkspaceQualifiedName: (namespace: string, workspaceName: string): AppThunk<SetWorkspaceQualifiedName> => (dispatch: AppDispatch<State, SetWorkspaceQualifiedName>): void => {
     dispatch({
       type: 'SET_WORKSPACE_NAME',
       namespace,
@@ -334,18 +330,18 @@ export const actionCreators: ActionCreators = {
     });
   },
 
-  clearWorkspaceQualifiedName: (): AppThunk<ClearWorkspaceQualifiedName> => dispatch => {
+  clearWorkspaceQualifiedName: (): AppThunk<ClearWorkspaceQualifiedName> => (dispatch: AppDispatch<State, ClearWorkspaceQualifiedName>): void => {
     dispatch({ type: 'CLEAR_WORKSPACE_NAME' });
   },
 
-  setWorkspaceId: (workspaceId: string): AppThunk<SetWorkspaceId> => dispatch => {
+  setWorkspaceId: (workspaceId: string): AppThunk<SetWorkspaceId> => (dispatch: AppDispatch<State, SetWorkspaceId>): void => {
     dispatch({
       type: 'SET_WORKSPACE_ID',
       workspaceId,
     });
   },
 
-  clearWorkspaceId: (): AppThunk<ClearWorkspaceId> => dispatch => {
+  clearWorkspaceId: (): AppThunk<ClearWorkspaceId> => (dispatch: AppDispatch<State, ClearWorkspaceId>): void => {
     dispatch({ type: 'CLEAR_WORKSPACE_ID' });
   },
 

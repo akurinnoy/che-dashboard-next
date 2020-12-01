@@ -18,7 +18,7 @@ export abstract class Logger {
      * Uses for logging of fatal errors.
      * @param text log text
      */
-    public static error(text: string, indentLevel: number = 1) {
+    public static error(text: string, indentLevel = 1): void {
         this.logText(indentLevel, `[ERROR] ${text}`);
     }
 
@@ -26,7 +26,7 @@ export abstract class Logger {
      * Uses for logging of recoverable errors and general warnings.
      * @param text log text
      */
-    public static warn(text: string, indentLevel: number = 1) {
+    public static warn(text: string, indentLevel = 1): void {
         if (TestConstants.TEST_LOG_LEVEL === 'ERROR') {
             return;
         }
@@ -37,7 +37,7 @@ export abstract class Logger {
      * Uses for logging of the public methods of the pageobjects.
      * @param text log text
      */
-    public static info(text: string, indentLevel: number = 3) {
+    public static info(text: string, indentLevel = 3): void {
         if (TestConstants.TEST_LOG_LEVEL === 'ERROR' ||
             TestConstants.TEST_LOG_LEVEL === 'WARN') {
             return;
@@ -49,7 +49,7 @@ export abstract class Logger {
      * Uses for logging of the public methods of the pageobjects.
      * @param text log text
      */
-    public static debug(text: string, indentLevel: number = 5) {
+    public static debug(text: string, indentLevel = 5): void {
         if (TestConstants.TEST_LOG_LEVEL === 'ERROR' ||
             TestConstants.TEST_LOG_LEVEL === 'WARN' ||
             TestConstants.TEST_LOG_LEVEL === 'INFO') {
@@ -63,7 +63,7 @@ export abstract class Logger {
      * private methods inside of pageobjects.
      * @param text log text
      */
-    public static trace(text: string, indentLevel: number = 6) {
+    public static trace(text: string, indentLevel = 6): void {
         if (TestConstants.TEST_LOG_LEVEL === 'ERROR' ||
             TestConstants.TEST_LOG_LEVEL === 'WARN' ||
             TestConstants.TEST_LOG_LEVEL === 'INFO' ||
@@ -73,7 +73,7 @@ export abstract class Logger {
         this.logText(indentLevel, `‣ ${text}`);
     }
 
-    private static logText(messageIndentationLevel: number, text: string) {
+    private static logText(messageIndentationLevel: number, text: string): void {
         // start group for every level
         for (let i = 0; i < messageIndentationLevel; i++) {
             console.group();

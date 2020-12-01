@@ -11,7 +11,7 @@
  */
 
 import { Action, Reducer } from 'redux';
-import { AppThunk } from '..';
+import { AppDispatch, AppThunk } from '..';
 import { fetchRegistriesMetadata, fetchDevfile } from '../../services/registry/devfiles';
 import { createState } from '../helpers';
 import { container } from '../../inversify.config';
@@ -84,7 +84,7 @@ type KnownAction = RequestMetadataAction
 export type ActionCreators = {
   requestRegistriesMetadata: (location: string) => AppThunk<KnownAction, Promise<che.DevfileMetaData[]>>;
   requestDevfile: (Location: string) => AppThunk<KnownAction, Promise<string>>;
-  requestJsonSchema: () => AppThunk<KnownAction, any>;
+  requestJsonSchema: () => AppThunk<KnownAction, Promise<any>>;
 
   setFilter: (value: string) => AppThunk<SetFilterValue, void>;
   clearFilter: () => AppThunk<ClearFilterValue, void>;
@@ -95,7 +95,7 @@ export const actionCreators: ActionCreators = {
   /**
    * Request devfile metadata from available registries. `registryUrls` is space-separated list of urls.
    */
-  requestRegistriesMetadata: (registryUrls: string): AppThunk<KnownAction, Promise<che.DevfileMetaData[]>> => async (dispatch): Promise<che.DevfileMetaData[]> => {
+  requestRegistriesMetadata: (registryUrls: string): AppThunk<KnownAction, Promise<che.DevfileMetaData[]>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<che.DevfileMetaData[]> => {
     dispatch({ type: 'REQUEST_METADATA' });
     try {
       const metadata = await fetchRegistriesMetadata(registryUrls);
@@ -106,7 +106,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  requestDevfile: (url: string): AppThunk<KnownAction, Promise<string>> => async (dispatch): Promise<string> => {
+  requestDevfile: (url: string): AppThunk<KnownAction, Promise<string>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<string> => {
     dispatch({ type: 'REQUEST_DEVFILE' });
     try {
       const devfile = await fetchDevfile(url);
@@ -117,7 +117,7 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  requestJsonSchema: (): AppThunk<KnownAction, any> => async (dispatch): Promise<any> => {
+  requestJsonSchema: (): AppThunk<KnownAction, any> => async (dispatch: AppDispatch<State, KnownAction>): Promise<any> => {
     dispatch({ type: 'REQUEST_SCHEMA' });
     try {
       const schema = await WorkspaceClient.restApiClient.getDevfileSchema();
@@ -128,11 +128,11 @@ export const actionCreators: ActionCreators = {
     }
   },
 
-  setFilter: (value: string): AppThunk<SetFilterValue, void> => dispatch => {
+  setFilter: (value: string): AppThunk<SetFilterValue, void> => (dispatch: AppDispatch<State, KnownAction>): void => {
     dispatch({ type: 'SET_FILTER', value });
   },
 
-  clearFilter: (): AppThunk<ClearFilterValue, void> => dispatch => {
+  clearFilter: (): AppThunk<ClearFilterValue, void> => (dispatch: AppDispatch<State, KnownAction>): void => {
     dispatch({ type: 'CLEAR_FILTER' });
   }
 

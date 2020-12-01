@@ -94,7 +94,7 @@ export class GetStarted extends React.PureComponent<Props, State> {
     stackName: string | undefined,
     infrastructureNamespace: string | undefined,
   ): Promise<void> {
-    const attr = stackName ? { stackName } : {};
+    const attr = stackName ? { stackName } : {} as {[key: string]: string};
     let workspace: che.Workspace;
     try {
       workspace = await this.props.createWorkspaceFromDevfile(devfile, undefined, infrastructureNamespace, attr);

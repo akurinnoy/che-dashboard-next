@@ -18,3 +18,4 @@ declare namespace api {
 declare module 'api' {
   export = api;
 }
+api.che.

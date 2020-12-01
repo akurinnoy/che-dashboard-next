@@ -93,7 +93,7 @@ export class DevfileLocationInput extends React.PureComponent<Props, State> {
     this.props.onChange(this.state.location);
   }
 
-  public render() {
+  public render(): React.ReactElement {
     const { location, validated, errorMessage } = this.state;
 
     const fieldId = 'devfile-url';

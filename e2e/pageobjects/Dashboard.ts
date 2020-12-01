@@ -17,7 +17,6 @@ import { TestConstants } from '../TestConstants';
 import { By } from 'selenium-webdriver';
 import { Logger } from '../utils/Logger';
 
-
 @injectable()
 export class Dashboard {
   private static readonly GET_STARTED_BUTTON_TEXT = 'Get Started Page'
@@ -27,14 +26,14 @@ export class Dashboard {
 
   constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) { }
 
-  async openDashboard(timeout: number = TestConstants.TEST_LOAD_PAGE_TIMEOUT) {
+  async openDashboard(timeout: number = TestConstants.TEST_LOAD_PAGE_TIMEOUT): Promise<void> {
     Logger.debug('Dashboard.openDashboard');
 
     await this.driverHelper.navigateToUrl(TestConstants.TEST_BASE_URL);
     await this.waitPage(timeout);
   }
 
-  async waitPage(timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+  async waitPage(timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
     Logger.debug('Dashboard.waitPage');
 
     await this.waitDashboardButton(Dashboard.GET_STARTED_BUTTON_TEXT, timeout);
@@ -43,13 +42,13 @@ export class Dashboard {
     await this.waitDashboardButton(Dashboard.CREATE_WORKSPACE_BUTTON_TEXT, timeout);
   }
 
-  private async clickDashboardButton(buttonText: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+  private async clickDashboardButton(buttonText: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
     const buttonLocator: By = this.getButtonLocator(buttonText);
 
     await this.driverHelper.waitAndClick(buttonLocator, timeout);
   }
 
-  private async waitDashboardButton(buttonText: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT) {
+  private async waitDashboardButton(buttonText: string, timeout: number = TestConstants.TEST_DEFAULT_TIMEOUT): Promise<void> {
     const buttonLocator: By = this.getButtonLocator(buttonText);
 
     await this.driverHelper.waitVisibility(buttonLocator, timeout);
@@ -61,5 +60,4 @@ export class Dashboard {
     return By.xpath(buttonXpathLocator);
   }
 }
-
 

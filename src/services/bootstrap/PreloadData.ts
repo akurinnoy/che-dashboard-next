@@ -59,7 +59,7 @@ export class PreloadData {
 
   private async updateBranding(): Promise<void> {
     const { requestBranding } = BrandingStore.actionCreators;
-    await requestBranding()(this.store.dispatch, this.store.getState);
+    await requestBranding()(this.store.dispatch, this.store.getState, undefined);
   }
 
   private updateRestApiClient(): void {
@@ -92,12 +92,12 @@ export class PreloadData {
 
   private async updatePlugins(settings: che.WorkspaceSettings): Promise<void> {
     const { requestPlugins } = Plugins.actionCreators;
-    await requestPlugins(settings.cheWorkspacePluginRegistryUrl || '')(this.store.dispatch, this.store.getState);
+    await requestPlugins(settings.cheWorkspacePluginRegistryUrl || '')(this.store.dispatch, this.store.getState, undefined);
   }
 
   private async updateInfrastructureNamespaces(): Promise<void> {
     const { requestNamespaces } = InfrastructureNamespaceStore.actionCreators;
-    await requestNamespaces()(this.store.dispatch, this.store.getState);
+    await requestNamespaces()(this.store.dispatch, this.store.getState, undefined);
   }
 
   private async updateWorkspaceSettings(): Promise<che.WorkspaceSettings> {

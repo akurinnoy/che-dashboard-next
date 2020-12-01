@@ -19,14 +19,17 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jest-dom/recommended',
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
+    'plugin:testing-library/react',
   ],
   ignorePatterns: [
     '.github/',
     '.vscode/',
     'assets/',
     'build/',
+    'coverage/',
     '*.js',
   ],
   parser: '@typescript-eslint/parser',
@@ -39,8 +42,10 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'jest-dom',
     'notice',
     'react',
+    'testing-library',
   ],
   rules: {
     'linebreak-style': [
@@ -80,10 +85,16 @@ module.exports = {
         'location': 'start'
       }
     ],
+    'testing-library/no-render-in-setup': 'error',
+    'testing-library/no-wait-for-empty-callback': 'error',
+    'testing-library/prefer-explicit-assert': 'error',
+    'testing-library/prefer-presence-queries': 'error',
+    'testing-library/prefer-screen-queries': 'error',
+    'testing-library/prefer-wait-for': 'error',
     // TODO enable rules below and fix errors
-    '@typescript-eslint/ban-types': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    // '@typescript-eslint/ban-types': 'off',
+    // '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // '@typescript-eslint/no-explicit-any': 'off',
   },
   settings: {
     react: {

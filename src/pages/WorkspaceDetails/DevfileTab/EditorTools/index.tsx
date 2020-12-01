@@ -57,13 +57,13 @@ class EditorTools extends React.PureComponent<Props, State> {
     const devfileText = stringify(this.props.devfile);
     const devfileBlobUrl = URL.createObjectURL(new Blob([devfileText], { type: 'application/x-yaml' }));
 
-    let copiedTimer;
+    let copiedTimer: number;
     const onCopyToClipboard = () => {
       this.setState({ copied: true });
       if (copiedTimer) {
         clearTimeout(copiedTimer);
       }
-      copiedTimer = setTimeout(() => {
+      copiedTimer = window.setTimeout(() => {
         this.setState({ copied: false });
       }, 3000);
     };

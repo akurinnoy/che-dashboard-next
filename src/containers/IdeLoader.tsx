@@ -120,13 +120,13 @@ class IdeLoader extends React.PureComponent<Props, State> {
     this.debounce.setDelay(1000);
   }
 
-  private updateIdeUrl(runtime: api.che.workspace.Runtime): void {
-    let ideUrl = '';
+  private updateIdeUrl(runtime: dto.workspace.Runtime): void {
+    let ideUrl: string | undefined;
     const machines = runtime.machines || {};
     for (const machineName of Object.keys(machines)) {
       const servers = machines[machineName].servers || {};
       for (const serverId of Object.keys(servers)) {
-        const attributes = (servers[serverId] as any).attributes;
+        const attributes = servers[serverId].attributes;
         if (attributes && attributes['type'] === 'ide') {
           ideUrl = servers[serverId].url;
           break;

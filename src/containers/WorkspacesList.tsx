@@ -40,7 +40,7 @@ export class WorkspacesList extends React.PureComponent<Props> {
     }
   }
 
-  render() {
+  render(): React.ReactElement {
     return (
       <WorkspacesListPage
         history={this.props.history}

@@ -19,11 +19,18 @@ import {
 
 import './Progress.styl';
 
-class CheProgress extends React.PureComponent<{ isLoading: boolean }, { progressVal: number }> {
-  private intervalId: any;
+type Props = {
+  isLoading: boolean;
+};
+type State = {
+  progressVal: number
+};
+
+class CheProgress extends React.PureComponent<Props, State> {
+  private intervalId: number | undefined;
   private readonly onProgressInc: () => void;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
 
     this.state = { progressVal: 0 };
@@ -37,7 +44,7 @@ class CheProgress extends React.PureComponent<{ isLoading: boolean }, { progress
   private updateProgressInterval(): void {
     if (this.props.isLoading) {
       if (!this.intervalId) {
-        this.intervalId = setInterval(() => {
+        this.intervalId = window.setInterval(() => {
           if (!this.props.isLoading && this.state.progressVal === 0) {
             if (this.intervalId) {
               clearInterval(this.intervalId);

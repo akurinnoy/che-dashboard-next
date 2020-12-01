@@ -18,16 +18,16 @@ import { injectable } from 'inversify';
  */
 @injectable()
 export class Debounce {
-  private debounceTimer: any;
+  private debounceTimer: number;
   private isDebounceDelay = false;
-  private debounceDelayHandlers: Array<Function> = [];
+  private debounceDelayHandlers: Array<(...args: any) => any> = [];
 
   setDelay(timeDelay = 5000): void {
     this.setDebounceDelay(true);
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
     }
-    this.debounceTimer = setTimeout(() => {
+    this.debounceTimer = window.setTimeout(() => {
       this.setDebounceDelay(false);
     }, timeDelay);
   }

@@ -64,7 +64,7 @@ class FactoryLoader extends React.PureComponent<Props, State> {
 
   private readonly wizardRef: RefObject<any>;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -83,7 +83,7 @@ class FactoryLoader extends React.PureComponent<Props, State> {
       }
     };
     // Init showAlert
-    let showAlertTimer;
+    let showAlertTimer: number;
     this.showAlert = (variant: AlertVariant, title: string): void => {
       this.setState({ currentRequestError: title, currentAlertVariant: variant });
       if (this.state.activeTabKey === LoadFactoryTabs.Progress) {
@@ -93,7 +93,7 @@ class FactoryLoader extends React.PureComponent<Props, State> {
       if (showAlertTimer) {
         clearTimeout(showAlertTimer);
       }
-      showAlertTimer = setTimeout(() => {
+      showAlertTimer = window.setTimeout(() => {
         this.setState({ alertVisible: false });
       }, variant === AlertVariant.success ? 2000 : 10000);
     };

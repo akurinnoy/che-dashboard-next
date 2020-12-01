@@ -11,7 +11,7 @@
  */
 
 import { Action, Reducer } from 'redux';
-import { AppThunkAction, AppState } from './';
+import { AppThunk, AppDispatch } from './';
 import { fetchPlugins } from '../services/registry/plugins';
 
 export interface State {
@@ -31,20 +31,13 @@ interface ReceivePluginsAction {
 type KnownAction = RequestPluginsAction
   | ReceivePluginsAction;
 
-// todo proper type instead of 'any'
 export type ActionCreators = {
-  requestPlugins: (registryUrl: string) => any;
+  requestPlugins: (registryUrl: string) => AppThunk<KnownAction, Promise<che.Plugin[]>>;
 };
 
 export const actionCreators: ActionCreators = {
 
-  requestPlugins: (registryUrl: string): AppThunkAction<KnownAction> => async (dispatch, getState): Promise<che.Plugin[]> => {
-    const appState: AppState = getState();
-    if (!appState || !appState.infrastructureNamespace) {
-      // todo throw a nice error
-      throw Error('something unexpected happened');
-    }
-
+  requestPlugins: (registryUrl: string): AppThunk<KnownAction, Promise<che.Plugin[]>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<che.Plugin[]> => {
     dispatch({ type: 'REQUEST_PLUGINS' });
 
     try {

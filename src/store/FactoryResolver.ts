@@ -12,7 +12,7 @@
 
 import { Action, Reducer } from 'redux';
 import { FactoryResolver } from '../services/helpers/types';
-import { AppState, AppThunk } from './';
+import { AppDispatch, AppThunk } from './';
 import { container } from '../inversify.config';
 import { CheWorkspaceClient } from '../services/workspace-client/CheWorkspaceClient';
 
@@ -23,7 +23,7 @@ export interface State {
   resolver: {
     location?: string;
     source?: string;
-    devfile?: api.che.workspace.devfile.Devfile;
+    devfile?: dto.che.workspace.devfile.Devfile;
   }
 }
 
@@ -33,25 +33,18 @@ interface RequestFactoryResolverAction {
 
 interface ReceiveFactoryResolverAction {
   type: 'RECEIVE_FACTORY_RESOLVER';
-  resolver: { location?: string; devfile?: api.che.workspace.devfile.Devfile; }
+  resolver: { location?: string; devfile?: dto.che.workspace.devfile.Devfile; }
 }
 
 type KnownAction = RequestFactoryResolverAction
   | ReceiveFactoryResolverAction;
 
-// todo proper type instead of 'any'
 export type ActionCreators = {
   requestFactoryResolver: (location: string) => AppThunk<KnownAction, Promise<void>>;
 };
 
 export const actionCreators: ActionCreators = {
-  requestFactoryResolver: (location: string): AppThunk<KnownAction, Promise<void>> => async (dispatch, getState): Promise<void> => {
-    const appState: AppState = getState();
-    if (!appState || !appState.infrastructureNamespace) {
-      // todo throw a nice error
-      throw Error('something unexpected happened');
-    }
-
+  requestFactoryResolver: (location: string): AppThunk<KnownAction, Promise<void>> => async (dispatch: AppDispatch<State, KnownAction>): Promise<void> => {
     dispatch({ type: 'REQUEST_FACTORY_RESOLVER' });
 
     try {

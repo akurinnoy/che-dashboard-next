@@ -9,6 +9,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
+
 import * as mocha from 'mocha';
 import { IDriver } from './IDriver';
 import * as fs from 'fs';
@@ -23,14 +24,14 @@ import { TYPES, CLASSES } from '../inversify.types';
 const driver: IDriver = testContainer.get(TYPES.Driver);
 const driverHelper: DriverHelper = testContainer.get(CLASSES.DriverHelper);
 const screenCatcher: ScreenCatcher = testContainer.get(CLASSES.ScreenCatcher);
-let methodIndex: number = 0;
-let deleteScreencast: boolean = true;
+let methodIndex = 0;
+let deleteScreencast = true;
 
 class CheDashboardReporter extends mocha.reporters.Spec {
   constructor(runner: mocha.Runner, options: mocha.MochaOptions) {
     super(runner, options);
 
-    runner.on('start', async (test: mocha.Test) => {
+    runner.on('start', async () => {
 //       const launchInformation: string =
 //         `################## Launch Information ##################
 
@@ -73,7 +74,7 @@ class CheDashboardReporter extends mocha.reporters.Spec {
 
       methodIndex = methodIndex + 1;
       const currentMethodIndex: number = methodIndex;
-      let iterationIndex: number = 1;
+      let iterationIndex = 1;
 
       while (!(test.state === 'passed' || test.state === 'failed')) {
         await screenCatcher.catchMethodScreen(test.title, currentMethodIndex, iterationIndex);
@@ -83,7 +84,7 @@ class CheDashboardReporter extends mocha.reporters.Spec {
       }
     });
 
-    runner.on('end', async function (test: mocha.Test) {
+    runner.on('end', async function () {
       // ensure that fired events done
       await driver.get().sleep(5000);
 
@@ -103,11 +104,10 @@ class CheDashboardReporter extends mocha.reporters.Spec {
       const testFullTitle: string = test.fullTitle().replace(/\s/g, '_');
       const testTitle: string = test.title.replace(/\s/g, '_');
 
-      const testReportDirPath: string = `${TestConstants.TEST_REPORT_FOLDER}/${testFullTitle}`;
-      const screenshotFileName: string = `${testReportDirPath}/screenshot-${testTitle}.png`;
-      const pageSourceFileName: string = `${testReportDirPath}/pagesource-${testTitle}.html`;
-      const browserLogsFileName: string = `${testReportDirPath}/browserlogs-${testTitle}.txt`;
-
+      const testReportDirPath = `${TestConstants.TEST_REPORT_FOLDER}/${testFullTitle}`;
+      const screenshotFileName = `${testReportDirPath}/screenshot-${testTitle}.png`;
+      const pageSourceFileName = `${testReportDirPath}/pagesource-${testTitle}.html`;
+      const browserLogsFileName = `${testReportDirPath}/browserlogs-${testTitle}.txt`;
 
       // create reporter dir if not exist
       const reportDirExists: boolean = fs.existsSync(TestConstants.TEST_REPORT_FOLDER);
@@ -137,10 +137,10 @@ class CheDashboardReporter extends mocha.reporters.Spec {
 
       // take browser console logs and write to file
       const browserLogsEntries: logging.Entry[] = await driverHelper.getDriver().manage().logs().get('browser');
-      let browserLogs: string = '';
+      let browserLogs = '';
 
       browserLogsEntries.forEach(log => {
-        browserLogs += `\"${log.level}\" \"${log.type}\" \"${log.message}\"\n`;
+        browserLogs += `"${log.level}" "${log.type}" "${log.message}"\n`;
       });
 
       const browserLogsStream = fs.createWriteStream(browserLogsFileName);

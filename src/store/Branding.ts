@@ -12,7 +12,7 @@
 
 import { Action, Reducer } from 'redux';
 import { fetchBranding } from '../services/assets/branding';
-import { AppThunkAction, AppState } from '.';
+import { AppThunk, AppDispatch } from '.';
 import { BRANDING_DEFAULT, BrandingData } from '../services/bootstrap/branding.constant';
 
 const ASSET_PREFIX = './assets/branding/';
@@ -38,19 +38,13 @@ type KnownActions =
   | ReceivedBrandingAction;
 
 export type ActionCreators = {
-  requestBranding: () => any;
+  requestBranding: () => AppThunk<KnownActions, Promise<BrandingData>>;
 };
 
 export const actionCreators: ActionCreators = {
 
-  requestBranding: (): AppThunkAction<KnownActions> =>
-    async (dispatch, getState): Promise<any> => {
-      const appState: AppState = getState();
-      if (!appState || !appState.branding) {
-        // todo throw a nice error
-        throw Error('something unexpected happened.');
-      }
-
+  requestBranding: (): AppThunk<KnownActions, Promise<BrandingData>> =>
+    async (dispatch: AppDispatch<State, KnownActions>): Promise<BrandingData> => {
       const url = `${ASSET_PREFIX}product.json?id=` + Math.floor((Math.random() * 100) + 1);
 
       dispatch({

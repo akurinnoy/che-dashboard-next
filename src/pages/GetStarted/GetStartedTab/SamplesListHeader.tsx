@@ -17,9 +17,6 @@ const TITLE = 'Select a Sample';
 const DESCRIPTION = 'Select a sample to create your first workspace';
 
 export class SamplesListHeader extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
 
   render(): React.ReactElement {
     return (
@@ -29,4 +26,5 @@ export class SamplesListHeader extends React.PureComponent {
       </TextContent>
     );
   }
+
 }

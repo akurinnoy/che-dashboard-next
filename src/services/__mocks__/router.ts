@@ -14,7 +14,7 @@ import { createLocation, createMemoryHistory, Location, LocationState } from 'hi
 import { MemoryHistory } from 'history/createMemoryHistory';
 import { match as routerMatch } from 'react-router';
 
-const generateUrl = <Params extends { [K in keyof Params]?: string } = {}>(path: string, params: Params): string => {
+const generateUrl = <Params extends { [K in keyof Params]?: string }>(path: string, params: Params): string => {
   let resultPath = path;
   for (const param in params) {
     if (params[param]) {
@@ -24,7 +24,7 @@ const generateUrl = <Params extends { [K in keyof Params]?: string } = {}>(path:
   return resultPath;
 };
 
-export const getMockRouterProps = <Params extends { [K in keyof Params]: string } = {}>(path: string, params: Params): {
+export const getMockRouterProps = <Params extends { [K in keyof Params]: string }>(path: string, params: Params): {
   history: MemoryHistory<LocationState>;
   location: Location<LocationState>;
   match: routerMatch<Params>

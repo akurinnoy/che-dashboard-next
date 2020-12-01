@@ -34,7 +34,7 @@ describe('Navigation Recent List', () => {
       },
       attributes: {
         updated: 1,
-      } as any,
+      } as che.WorkspaceConfigAttributes,
     } as che.Workspace,
     {
       id: 'wksp-2',
@@ -45,7 +45,7 @@ describe('Navigation Recent List', () => {
       },
       attributes: {
         updated: 2,
-      } as any,
+      } as che.WorkspaceConfigAttributes,
     } as che.Workspace,
     {
       id: 'wksp-3',
@@ -56,7 +56,7 @@ describe('Navigation Recent List', () => {
       },
       attributes: {
         updated: 3,
-      } as any,
+      } as che.WorkspaceConfigAttributes,
     } as che.Workspace,
   ];
 

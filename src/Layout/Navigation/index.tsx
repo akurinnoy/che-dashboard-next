@@ -33,6 +33,13 @@ export interface NavigationRecentItemObject {
   status: string;
 }
 
+type SelectedNavItem = {
+  groupId: React.ReactText;
+  itemId: React.ReactText;
+  to: string;
+  event: React.FormEvent<HTMLInputElement>;
+}
+
 type Props =
   MappedProps
   & {
@@ -60,8 +67,8 @@ export class Navigation extends React.PureComponent<Props, State> {
     };
   }
 
-  private onNavSelect(selected: any): void {
-    this.setState({ activePath: selected.itemId });
+  private onNavSelect(selected: SelectedNavItem): void {
+    this.setState({ activePath: selected.itemId as string });
   }
 
   public render(): React.ReactElement {

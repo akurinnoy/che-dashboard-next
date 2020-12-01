@@ -10,9 +10,12 @@
  *   Red Hat, Inc. - initial API and implementation
  */
 
-module.exports = {
-  'hooks': {
-    // 'pre-commit': 'lint-staged',
-    // 'pre-push': 'sh ./test-staged.sh',
-  },
-};
+import { che } from '@eclipse-che/api';
+export namespace dto {
+  // export default che;
+}
+
+declare module 'dto' {
+  export const dto = che;
+}
+dto.

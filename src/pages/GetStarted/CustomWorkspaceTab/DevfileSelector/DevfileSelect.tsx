@@ -107,7 +107,7 @@ export class DevfileSelect extends React.PureComponent<Props, State> {
     return typeaheadFilteredChildren;
   }
 
-  render() {
+  render(): React.ReactElement {
     const { isOpen, selected } = this.state;
     const titleId = 'typeahead-select-defile-id';
 

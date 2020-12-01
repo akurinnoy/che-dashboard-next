@@ -366,7 +366,7 @@ export class DevfileEditor extends React.PureComponent<Props, State> {
       if (validationTimer) {
         clearTimeout(validationTimer);
       }
-      validationTimer = setTimeout(() => {
+      validationTimer = window.setTimeout(() => {
         this.yamlService.doValidation(document, false).then(diagnostics => {
           const markers = this.p2m.asDiagnostics(diagnostics) as monaco.editor.IMarkerData[] | undefined;
           let errorMessage = '';

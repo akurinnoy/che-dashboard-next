@@ -43,7 +43,7 @@ export class OverviewTab extends React.Component<Props, State> {
     this.state = { storageType, workspaceName, namespace };
   }
 
-  public get hasChanges() {
+  public get hasChanges(): boolean {
     return this.isWorkspaceNameChanged;
   }
 

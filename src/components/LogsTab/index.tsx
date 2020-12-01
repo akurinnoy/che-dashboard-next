@@ -88,7 +88,7 @@ export class LogsTab extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): React.ReactElement {
     const { isExpanded, logs, hasError, isStopped } = this.state;
 
     if (isStopped) {

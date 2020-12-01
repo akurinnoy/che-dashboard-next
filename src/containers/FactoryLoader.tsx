@@ -178,7 +178,7 @@ export class FactoryLoader extends React.PureComponent<Props, State> {
 
     let workspace: che.Workspace | null = null;
     try {
-      workspace = await this.props.createWorkspaceFromDevfile(devfile, undefined, undefined, attrs) as any;
+      workspace = await this.props.createWorkspaceFromDevfile(devfile, undefined, undefined, attrs);
     } catch (e) {
       this.showAlert('Failed to create a workspace.');
       return;
@@ -209,7 +209,7 @@ export class FactoryLoader extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): React.ReactElement {
     const { workspace } = this.props;
     const { currentStep, devfileLocationInfo, hasError } = this.state;
     const workspaceName = workspace && workspace.devfile.metadata.name ? workspace.devfile.metadata.name : '';

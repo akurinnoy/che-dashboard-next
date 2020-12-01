@@ -23,7 +23,8 @@ const FactoryLoader = React.lazy(() => import('./containers/FactoryLoader'));
 
 export interface RouteItem {
   to: ROUTE;
-  component: React.FunctionComponent<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: React.LazyExoticComponent<any>;
 }
 
 const items: RouteItem[] = [
