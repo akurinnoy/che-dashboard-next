@@ -10,6 +10,8 @@
  *   Red Hat, Inc. - initial API and implementation
  */
 
+// just trying to trigger the GH workflow
+
 import React, { Suspense } from 'react';
 import { History } from 'history';
 import { connect, ConnectedProps } from 'react-redux';
@@ -95,7 +97,7 @@ export class GetStarted extends React.PureComponent<Props, State> {
     infrastructureNamespace: string | undefined,
   ): Promise<void> {
     const attr = stackName ? { stackName } : {};
-    let workspace: che.Workspace;
+    let workspace: che.Workspace = {} as che.Workspace;
     try {
       workspace = await this.props.createWorkspaceFromDevfile(devfile, undefined, infrastructureNamespace, attr);
     } catch (e) {
