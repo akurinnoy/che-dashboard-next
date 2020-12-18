@@ -25,7 +25,12 @@ jobs:
     steps:
     - name: Checkout che-dashboard-next source code
       uses: actions/checkout@v2
-    
+      
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.6.0
+      with:
+        access_token: ${{ github.token }}
+              
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
