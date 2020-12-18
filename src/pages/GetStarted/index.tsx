@@ -10,6 +10,8 @@
  *   Red Hat, Inc. - initial API and implementation
  */
 
+// just trying to trigger the GH workflow
+
 import React, { Suspense } from 'react';
 import { History } from 'history';
 import { connect, ConnectedProps } from 'react-redux';
