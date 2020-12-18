@@ -168,6 +168,7 @@ export class GetStarted extends React.PureComponent<Props, State> {
     const { activeTabKey } = this.state;
     const title = this.getTitle();
 
+    return (<span>test</span>);
     return (
       <React.Fragment>
         <PageSection variant={PageSectionVariants.light}>
