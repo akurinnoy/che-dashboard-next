@@ -50,4 +50,4 @@ jobs:
           file: ./apache.Dockerfile
           platforms: linux/amd64,linux/s390x
           push: false
-          tags: $IMAGE_FULL
+          tags: ${{ env.IMAGE_FULL }}
