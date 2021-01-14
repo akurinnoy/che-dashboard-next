@@ -47,7 +47,7 @@ jobs:
           context: .
           cache-from: type=registry,ref=${{ env.CACHE_IMAGE_FULL }}
           cache-to: type=registry,ref=${{ env.CACHE_IMAGE_FULL }},mode=max
-          file: ./apache.Dockerfile
+          file: apache.Dockerfile
           platforms: linux/amd64,linux/s390x
           push: false
           tags: ${{ env.IMAGE_FULL }}
